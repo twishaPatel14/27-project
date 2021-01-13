@@ -3,69 +3,64 @@ const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
-var bobObject1,bobObject2,bobObject3,bobObject4,bobObject5
-var roof,bob,rope1 ,rope2,rope3,rope4,rope5
-function preload()
-{
-	
-}
+
+const Constraint = Matter.Constraint;
+
+const MouseConstraint = Matter.MouseConstraint;
+
+var world, engine, canvas;
+var pendulum1, pendulum2, pendulum3, pendulum4, pendulum5;
+var sling1, sling2, sling3, sling4, sling5;
+var mConstraint;
 
 function setup() {
-	createCanvas(800, 700);
+	canvas = createCanvas(windowWidth / 2, windowHeight / 1.5);
+  engine = Engine.create();
+  world = engine.world;
 
+  let canvasmouse = Mouse.create(canvas.elt);
+  canvasmouse.pixelRatio = pixelDensity();
+  let options = {
+    mouse: canvasmouse
+  };
+  mConstraint = MouseConstraint.create(engine, options);
+  World.add(world, mConstraint);
 
-	engine = Engine.create();
-	world = engine.world;
-roof= new Roof(350,100,300,10)
-World.add(world,roof)
+  pendulum1 = new Pendulum(340, 450,"pink");
+  pendulum2 = new Pendulum(400, 450,"pink");
+  pendulum3 = new Pendulum(460, 450,"pink");
+  pendulum4 = new Pendulum(520, 450,"pink");
+  pendulum5 = new Pendulum(580, 450,"pink");
 
-	bobObject1 = new Bob(250,300)
-	bobObject2= new   Bob(300,300)
-	bobObject3= new Bob(350,300)
-	bobObject4= new Bob(400,300)
-bobObject = new Bob (450,300)
-
-rope1= new Rope (bobObject1.body,roof.body,-100,0)
-World.add(world,rope1)
-rope2= new Rope (bobObject2.body,roof.body,-50,0)
-World.add(world,rope2)
-rope3= new Rope (bobObject3.body,roof.body,0,0)
-World.add(world,rope3)
-rope4= new Rope (bobObject4.body,roof.body,50,0)
-World.add(world,rope4)
-rope5= new Rope (bobObject5.body,Roof.body,100,0)
-World.add(world,rope5)
-
-	Engine.run(engine);
-  
+  sling1 = new Sling(pendulum1.body, { x: 340, y: 200 });
+  sling2 = new Sling(pendulum2.body, { x: 400, y: 200 });
+  sling3 = new Sling(pendulum3.body, { x: 460, y: 200 });
+  sling4 = new Sling(pendulum4.body, { x: 520, y: 200 });
+  sling5 = new Sling(pendulum5.body, { x: 580, y: 200 });
 }
+
+
 
 
 function draw() {
-  rectMode(CENTER);
-  background('white');
-  Engine.update(engine);
-
-  bobObject1.display();
-  bobObject2.display();
-  bobObject3.display();
-  bobObject4.display();
-  bobObject1.display();
-
-  rope1.display();
-  rope2.display();
-rope3.display();
-rope4.display();
-rope5.display();
-
-function KeyPressed(){
-  if(keyCode===32){
-    Matter.Body.applyForce(bobObject1.body,bobObject1.body.position ,{x:-730,y:0});
+	background(0);
+	Engine.update(engine);
+	pendulum1.display();
+	pendulum2.display();
+	pendulum3.display();
+	pendulum4.display();
+	pendulum5.display();
+	sling1.display();
+	sling2.display();
+	sling3.display();
+	sling4.display();
+	sling5.display();
   }
-}
-  drawSprites();
- 
-}
+  
+  function mouseDragged() {
+	Matter.Body.setPosition(pendulum1.body, { x: mouseX, y: mouseY });
+  }
+
 
 
 
